@@ -5103,12 +5103,6 @@ async function syncBatchesFromSupabase(){
 
         console.log("EduSmart batches synced:", onlineBatches);
 
-        // Agar dashboard already open hai to refresh karo
-        if(
-            localStorage.getItem("edusmartLoggedIn") === "true" &&
-            typeof showDashboard === "function"
-        ){
-            showDashboard();
         }
 
     }catch(error){
