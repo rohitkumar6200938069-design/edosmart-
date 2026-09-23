@@ -1213,7 +1213,7 @@ hr{
         <label>Admin Email</label>
         <input
             id="adminEmail"
-            value="admin@edusmart.com"
+            value="alokkumarmahto12345678@gmail.com"
         >
     </div>
 
@@ -1320,7 +1320,7 @@ hr{
    EDUSMART COMPLETE JAVASCRIPT
    ===================================================== */
 
-const ADMIN_EMAIL = "admin@edusmart.com";
+const ADMIN_EMAIL = "alokkumarmahto12345678@gmail.com";
 const ADMIN_PASSWORD = "admin123";
 
 let currentPage = "splashPage";
@@ -3312,38 +3312,33 @@ function showAdminLogin(){
 }
 
 
-function adminLogin(){
+async function adminLogin(){
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value;
 
-    const email =
-        document.getElementById(
-            "adminEmail"
-        ).value.trim();
-
-    const password =
-        document.getElementById(
-            "adminPassword"
-        ).value;
-
-    if(
-        email === ADMIN_EMAIL &&
-        password === ADMIN_PASSWORD
-    ){
-
-        localStorage.setItem(
-            "edusmartAdminLoggedIn",
-            "true"
-        );
-
-        showAdmin();
-
-    }else{
-
-        alert(
-            "Admin Email या Password गलत है।"
-        );
-
+    if(!email || !password){
+        alert("Admin Email aur Password bhariye.");
+        return;
     }
 
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if(error || !data.user){
+        alert("Admin Login failed: " + (error?.message || "Invalid login"));
+        return;
+    }
+
+    if(email !== "alokkumarmahto12345678@gmail.com"){
+        await supabaseClient.auth.signOut();
+        alert("Ye Admin account nahi hai.");
+        return;
+    }
+
+    localStorage.setItem("edusmartAdminLoggedIn", "true");
+    showAdmin();
 }
 
 
